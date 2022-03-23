@@ -6,10 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        
+        email: ''
     },
     mutations: {
-
+        setEmail(state, payload) {
+            console.log(payload)
+        }
     },
     actions: {
         async userLogin() {
