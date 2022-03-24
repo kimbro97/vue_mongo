@@ -19,17 +19,20 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
         }
     },
     methods: {
         async userLogin() {
             let result = await axios.post('http://localhost:3000/api/v1/users/login', 
-            { email: this.email, password: this.password }, 
-            { headers: {  'Content-Type': 'multipart/form-data' },  }
+            { 
+              email: this.email, 
+              password: this.password 
+            }
             )
-            if(result.success){
-                console.log(result.data)
+            if (result.data.success) {
+              sessionStorage.setItem('accessToken', result.data.accessToken)
+              await this.$router.push('mypage')
             }
         }
     }

@@ -1,6 +1,6 @@
 <template >
     <div>
-        <LoginComponent></LoginComponent>
+        <LoginComponent />
     </div>
 </template>
 <script>
