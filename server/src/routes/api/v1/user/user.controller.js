@@ -23,8 +23,10 @@ controller.createUser = async (req, res) => { // 회원가입
 } 
 
 controller.loginUser = async (req, res) => { // 로그인
+    console.log('ddd')
+    
     const { email, password } = req.body
-
+    console.log(email, password)
     const userInfo = await User.findOne({email}) // 해당 이메일을 찾아본다
     
     if(!userInfo) return res.status(400).send({ message: "이메일 정보를 확인해주세요" }) // 해당 이메일이 없다면
@@ -56,18 +58,45 @@ controller.loginUser = async (req, res) => { // 로그인
 }
 controller.logoutUser = async (req, res) => {
 
+    const check = isAuthorized(req)
+
+    if(!check){
+        return res.status(400).send({message: '토큰값이 만료되어 다시 로그인해주세요'})
+    }
+    return res.status(200).send({success: true})
 }
 
 controller.deleteUser = async (req, res) => {
 
     const { id } = req.params
+    if(!mongoose.isValidObjectId(id)) return res.status(400).send({message: "유효하지 않은 Id 입니다"})
+    const check = isAuthorized(req)
+
+    if(!check){
+        return res.status(400).send({message: '토큰값이 만료되어 다시 로그인해주세요'})
+    }
+    
+    await User.findOneAndDelete({_id: id})
+    return res.status(200).send({message: "성공적으로 회원탈퇴 되었습니다"})
+}
+
+controller.updateUser = async (req, res) => {
+
+    const { id } = req.params
+
+    if(!mongoose.isValidObjectId(id)) return res.status(400).send({message: "유효하지 않은 Id 입니다"})
 
     const check = isAuthorized(req)
 
     if(!check){
         return res.status(400).send({message: '토큰값이 만료되어 다시 로그인해주세요'})
     }
-    if(!mongoose.isValidObjectId(id)) return res.status(400).send({message: "유효하지 않은 Id 입니다"})
-    await User.findOneAndDelete({_id: id})
-    return res.status(200).send({message: "성공적으로 회원탈퇴 되었습니다"})
+    
+
+    let userInfo = await User.findOne({_id: id})
+    if(req.body.nickname) userInfo.nickname = req.body.nickname
+    if(req.body.password) userInfo.password = CryptoJS.SHA512(req.body.password)
+    userInfo.save()
+    const { _id, nickname, createdAt, updatedAt } = userInfo
+    return res.send({ success: true, userInfo: {_id, nickname, createdAt, updatedAt} })
 }

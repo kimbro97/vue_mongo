@@ -8,7 +8,7 @@ export const signAccessToken = (data) => { // 토큰 발금
 }
 
 export const signRefreshToken = (data) => { // 토큰 발금
-    return Jwt.sign(data, process.env.REFRESH_SECRET, { expiresIn: '1s' })
+    return Jwt.sign(data, process.env.REFRESH_SECRET, { expiresIn: '30d' })
 }
 
 export const isAuthorized = (req) => { // 토큰 확인
