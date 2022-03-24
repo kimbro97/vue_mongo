@@ -10,12 +10,14 @@ const app = express()
 mongoose.connect(process.env.MONGO_PASSWORD)
 console.log("database conneted");
 
+
 app.use(cors({
     origin: ["http://localhost:8080"],
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true
   }))
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 app.use(routes)
 
 

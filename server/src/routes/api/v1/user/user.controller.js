@@ -23,8 +23,7 @@ controller.createUser = async (req, res) => { // 회원가입
 } 
 
 controller.loginUser = async (req, res) => { // 로그인
-    console.log('ddd')
-    
+    console.log(req.body)
     const { email, password } = req.body
     console.log(email, password)
     const userInfo = await User.findOne({email}) // 해당 이메일을 찾아본다
