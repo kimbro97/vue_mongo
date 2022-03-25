@@ -24,6 +24,19 @@ export const isAuthorized = (req) => { // 토큰 확인
       return null
     }
 }
+export const isRefreshAuthorized = (req) => { // 토큰 확인
+  const authorization = req.headers.authorization
+  if (!authorization) {
+    return null
+  }
+  const token = authorization.split(' ')[1]
+  try {
+    return Jwt.verify(token, process.env.REFRESH_SECRET)
+  } catch (err) {
+      if(err.message === 'invalid signature') return res.status(401).send({message: "유호하지 않은 토큰입니다"})
+    return null
+  }
+}
 export const checkRefeshToken = (res, refreshToken) => {
     try {
       return Jwt.verify(refreshToken, process.env.REFRESH_SECRET);

@@ -13,7 +13,7 @@ console.log("database conneted");
 
 app.use(cors({
     origin: ["http://localhost:8080"],
-    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
+    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT','OPTIONS'],
     credentials: true
   }))
 app.use(express.json())

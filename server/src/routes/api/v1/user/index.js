@@ -6,7 +6,8 @@ const router = Router();
 router.post('/login', controller.loginUser);
 router.post('/signup', controller.createUser);
 router.post('/logout', controller.logoutUser);
-router.delete('/:id', controller.deleteUser);
-router.put('/:id', controller.updateUser)
+router.delete('/', controller.deleteUser);
+router.put('/', controller.updateUser)
+router.get('/', controller.getUserInfo)
 
 export default router;
