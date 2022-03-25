@@ -5,7 +5,7 @@
         <h3>로그인</h3>
         <input type="text" placeholder="이메일" v-model="email"/>
         <input type="password" placeholder="비밀번호" v-model="password"/>
-        <button @click="userLogin">login</button>
+        <button @click="login">login</button>
         <p class="message">아직 회원이 아니신가요?? <router-link to="signup">회원가입</router-link></p>
         <router-view></router-view>
         </div>
@@ -13,7 +13,6 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
 
 export default {
     data() {
@@ -23,17 +22,9 @@ export default {
         }
     },
     methods: {
-        async userLogin() {
-            let result = await axios.post('http://localhost:3000/api/v1/users/login', 
-            { 
-              email: this.email, 
-              password: this.password 
-            }
-            )
-            if (result.data.success) {
-              sessionStorage.setItem('accessToken', result.data.accessToken)
-              await this.$router.push('mypage')
-            }
+        async login() {
+            await this.$store.dispatch('login', {email: this.email, password: this.password})
+            this.$store.commit('setIsLogin')
         }
     }
 }

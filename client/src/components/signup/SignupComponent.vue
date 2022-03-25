@@ -3,10 +3,11 @@
     <div class="form">
         <div class="login-form">
         <h3>회원가입</h3>
-        <input type="text" placeholder="이메일"/>
-        <input type="password" placeholder="비밀번호"/>
-        <input type="password" placeholder="비밀번호 확인"/>
-        <button>signup</button>
+        <input type="text" placeholder="닉네임" v-model="nickname"/>
+        <input type="text" placeholder="이메일" v-model="email"/>
+        <input type="password" placeholder="비밀번호" v-model="password"/>
+        <input type="password" placeholder="비밀번호 확인" v-model="verifyPassword"/>
+        <button @click="signup">signup</button>
         <p class="message">이미 회원이신가요?? <router-link to="/">로그인</router-link></p>
         </div>
     </div>
@@ -14,7 +15,19 @@
 </template>
 <script>
 export default {
-    
+    data() {
+        return {
+          nickname: '',
+          email: '',
+          password: '',
+          verifyPassword: ''
+        }
+    },
+    methods: {
+      async signup() {
+          await this.$store.dispatch('signup', { nickname: this.nickname, email: this.email, password: this.password })
+      }
+    }
 }
 </script>
 <style>
